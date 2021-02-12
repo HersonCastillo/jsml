@@ -1,2 +1,5 @@
+.git*
+/node_modules/
 src/
-index.ts
+/index.ts
+dist/tsconfig.tsbuildinfo
