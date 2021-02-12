@@ -1,0 +1,26 @@
+{
+  "name": "@htevez/jsml",
+  "version": "1.0.0",
+  "description": "JS Markup Language",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "tsc --watch",
+    "build:webpack": "tsc && webpack ."
+  },
+  "keywords": [
+    "JS",
+    "JSML",
+    "DOM",
+    "Events",
+    "Reactive"
+  ],
+  "author": "Herson Castillo",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^4.1.3",
+    "webpack-cli": "^4.5.0"
+  },
+  "dependencies": {
+    "path": "^0.12.7"
+  }
+}
