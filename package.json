@@ -2,8 +2,7 @@
   "name": "@htevez/jsml",
   "version": "1.0.0",
   "description": "JS Markup Language",
-  "main": "dist/index.js",
-  "private": true,
+  "main": "index.js",
   "scripts": {
     "start": "tsc --watch",
     "build:webpack": "tsc && webpack ."
