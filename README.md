@@ -12,7 +12,7 @@ How you can use it?
     npm i --save @duox/jsml
 
 `app.ts`
-```javascript
+```typescript
 import { IRoute, PageElement } from '@duox/jsml';
 
 const Span = (text: string) => ({
@@ -30,7 +30,7 @@ export const App = (): PageElement => ({
 
 `main.ts`
 
-```javascript
+```typescript
 import { Page } from '@duox/jsml';
 import { App } from './app';
 
@@ -44,7 +44,7 @@ mainPage.render();
 Or also you can use a routing system, for example:
 
 `app.ts`
-```javascript
+```typescript
 import { IRoute, PageElement } from '@duox/jsml';
 import { HomePage } from './home.page';
 
