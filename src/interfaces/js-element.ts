@@ -5,7 +5,7 @@ export interface JSElementEvent {
 
 export interface JSElement {
   tag: string;
-  child: JSElement | JSElement[] | string;
+  child?: JSElement | JSElement[] | string;
   events?: JSElementEvent[];
   classes?: string[];
   style?: Partial<CSSStyleDeclaration>;
