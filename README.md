@@ -1,7 +1,10 @@
 **JSML (JavaScript Markup Language)**
+
 Sometimes we find ourselves with the need to use some of the new technologies but our learning with them can be difficult at first, because we do not know how they work.
 This is a small library for web interfaces, very flat that extracts basic concepts from modern frameworks, such as React, Angular, Vue, etc.
+
 PS: This library is not recommended at all for projects in production and less for large-scale projects.
+
 PS 2: The name is currently a joke, dont take serious.
 
 How you can use it?
