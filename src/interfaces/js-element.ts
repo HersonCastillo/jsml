@@ -8,6 +8,6 @@ export interface JSElement {
   child: JSElement | JSElement[] | string;
   events?: JSElementEvent[];
   classes?: string[];
-  style?: CSSStyleDeclaration;
+  style?: Partial<CSSStyleDeclaration>;
   [htmlElementProperty: string]: any;
 }
