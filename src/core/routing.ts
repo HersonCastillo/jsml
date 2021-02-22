@@ -62,12 +62,22 @@ export class Routing {
   }
 
   prepareRenderization(route: IRoute): void {
-    const { page } = route;
+    const { page, onLoad, onLeave } = route;
     const renderStatus = this.evaluateCleanZone(route);
+    if (this.currentRoute && onLeave) {
+      onLeave(route);
+    }
     this.currentRoute = route;
     if (renderStatus) {
       this.cleanZone();
-      this.pageInstance.renderContext(page, this.pageInstance);
+      if (onLoad) {
+        const onLoadResult = onLoad(route);
+        if (onLoadResult) {
+          this.pageInstance.renderContext(page, this.pageInstance);
+        }
+      } else {
+        this.pageInstance.renderContext(page, this.pageInstance);
+      }
     }
   }
 }
