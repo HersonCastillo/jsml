@@ -9,7 +9,6 @@ How you can use it?
 `app.ts`
 ```javascript
 import { IRoute, PageElement } from '@duox/jsml';
-import { HomePage } from './home.page';
 
 const Span = (text: string) => ({
   tag: 'span',
@@ -30,7 +29,7 @@ export const App = (): PageElement => ({
 import { Page } from '@duox/jsml';
 import { App } from './app';
 
-const appContainer = document.querySelector('#app') as HTMLElement;
+const appContainer = document.querySelector('#app');
 
 const mainPage = new Page(App, appContainer);
 
