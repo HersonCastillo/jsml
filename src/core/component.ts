@@ -59,11 +59,11 @@ export class Component {
     }
   }
 
-  assignStyle(element: HTMLElement, style: CSSStyleDeclaration): void {
+  assignStyle(element: HTMLElement, style: Partial<CSSStyleDeclaration>): void {
     if (element && style) {
       for (const styleElement in style) {
         if (style[styleElement]) {
-          element.style[styleElement] = style[styleElement];
+          element.style[styleElement] = style[styleElement]!;
         }
       }
     }
