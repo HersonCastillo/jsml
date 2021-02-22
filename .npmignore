@@ -2,4 +2,6 @@
 /node_modules/
 src/
 /index.ts
+.eslintrc.json
+.prettierrc.json
 dist/tsconfig.tsbuildinfo

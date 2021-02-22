@@ -1,6 +1,6 @@
-import { PageArguments } from "../interfaces/page-arguments";
-import { PageElement } from "../interfaces/page-element";
-import { Page } from "./page";
+import { PageArguments } from '../interfaces/page-arguments';
+import { PageElement } from '../interfaces/page-element';
+import { Page } from './page';
 
 export class ChangeDetection {
   constructor(

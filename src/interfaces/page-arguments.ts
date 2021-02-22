@@ -1,4 +1,4 @@
-import { ChangeDetection } from "../core/change-detection";
+import { ChangeDetection } from '../core/change-detection';
 
 export interface PageArguments {
   changeDetection?: ChangeDetection;

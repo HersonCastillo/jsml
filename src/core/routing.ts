@@ -1,8 +1,7 @@
-import { IRoute } from "../interfaces/routes";
-import { Page } from "./page";
+import { IRoute } from '../interfaces/routes';
+import { Page } from './page';
 
 export class Routing {
-  
   private currentHash = location.hash;
   private currentRoute!: IRoute;
 
@@ -10,48 +9,47 @@ export class Routing {
     window.onhashchange = this.hashChangeEvent.bind(this);
   }
 
-  start() {
+  start(): void {
     const currentRoute = this.manageCurrentHash();
     this.renderPage(currentRoute);
   }
 
-  hashChangeEvent() {
+  hashChangeEvent(): void {
     this.currentHash = location.hash;
     const currentRoute = this.manageCurrentHash();
     this.renderPage(currentRoute);
   }
 
-  manageCurrentHash() {
+  manageCurrentHash(): string | null {
     if (this.currentHash.length === 0) {
-      location.href = "#";
+      location.href = '#';
       return null;
     }
     const route = this.currentHash.replace('#', '');
     return route.trim();
   }
 
-  evaluateCleanZone(route: IRoute) {
+  evaluateCleanZone(route: IRoute): boolean {
     if (route) {
-      const currentRoute = this.currentRoute;
-      if (currentRoute) {
-        return currentRoute.path !== route.path;
-      } else {
-        return true;
+      if (this.currentRoute) {
+        return this.currentRoute.path !== route.path;
       }
+      return true;
     }
     return false;
   }
 
   cleanZone() {
-    this.pageInstance.safeZone.innerHTML = "";
+    this.pageInstance.safeZone.innerHTML = '';
   }
 
   renderPage(currentPath: string | null) {
     const { routes } = this;
-    const notFound = routes.find((route) => (route.path.includes('**')));
-    const currentPage = routes.find((route) => (
-      route.path.includes(currentPath!))
-      || (Boolean(route.default) && !currentPath)
+    const notFound = routes.find((route) => route.path.includes('**'));
+    const currentPage = routes.find(
+      (route) =>
+        route.path.includes(currentPath!)
+        || (Boolean(route.default) && !currentPath),
     );
 
     if (currentPage) {
@@ -65,11 +63,11 @@ export class Routing {
 
   prepareRenderization(route: IRoute): void {
     const { page } = route;
-      const renderStatus = this.evaluateCleanZone(route);
-      this.currentRoute = route;
-      if (renderStatus) {
-        this.cleanZone();
-        this.pageInstance.renderContext(page, this.pageInstance);
-      }
+    const renderStatus = this.evaluateCleanZone(route);
+    this.currentRoute = route;
+    if (renderStatus) {
+      this.cleanZone();
+      this.pageInstance.renderContext(page, this.pageInstance);
+    }
   }
 }

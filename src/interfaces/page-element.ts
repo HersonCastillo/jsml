@@ -1,8 +1,8 @@
-import { JSElement } from "./js-element";
-import { IRoute } from "./routes";
+import { JSElement } from './js-element';
+import { IRoute } from './routes';
 
 export interface PageElement {
   title?: string;
-  body: JSElement[];
+  body?: JSElement[];
   routes?: IRoute[];
 }

@@ -2,7 +2,6 @@ import { ComponentArguments } from '../interfaces/component-arguments';
 import { JSElement, JSElementEvent } from '../interfaces/js-element';
 
 export class Component {
-
   constructor(
     private element: JSElement | ((args?: ComponentArguments) => JSElement),
     private args?: ComponentArguments,
@@ -18,20 +17,13 @@ export class Component {
   }
 
   createElement(jsElement: JSElement): HTMLElement {
-    const {
-      classes,
-      child,
-      events,
-      tag,
-      style,
-      ...rest
-    } = jsElement;
+    const { classes, child, events, tag, style, ...rest } = jsElement;
     const domElement = document.createElement(tag);
 
     if (style) {
       this.assignStyle(domElement, style);
     }
-    
+
     if (classes) {
       this.assignClasses(domElement, classes);
     }
@@ -39,24 +31,22 @@ export class Component {
     if (events && events.length) {
       this.assignEvents(domElement, events);
     }
-    
-    if (Object.keys(rest).length) {
+
+    if (Object.keys(rest)?.length) {
       this.assignUnsigedProperties(domElement, rest);
     }
 
     if (child) {
       if (typeof child === 'string') {
         domElement.innerHTML = child;
-      } else {
-        if (Array.isArray(child) && child.length) {
-          for (const currentChild of child) {
-            const currentChildElement = this.createElement(currentChild);
-            this.appendChild(domElement, currentChildElement);
-          }
-        } else {
-          const childElement = this.createElement(child as JSElement);
-          this.appendChild(domElement, childElement);
+      } else if (Array.isArray(child) && child.length) {
+        for (const currentChild of child) {
+          const currentChildElement = this.createElement(currentChild);
+          this.appendChild(domElement, currentChildElement);
         }
+      } else {
+        const childElement = this.createElement(child as JSElement);
+        this.appendChild(domElement, childElement);
       }
     }
 
@@ -72,7 +62,9 @@ export class Component {
   assignStyle(element: HTMLElement, style: CSSStyleDeclaration): void {
     if (element && style) {
       for (const styleElement in style) {
-        element.style[styleElement] = style[styleElement];
+        if (style[styleElement]) {
+          element.style[styleElement] = style[styleElement];
+        }
       }
     }
   }
@@ -99,7 +91,9 @@ export class Component {
   assignUnsigedProperties(element: HTMLElement, props: any): void {
     if (element) {
       for (const prop in props) {
-        element.setAttribute(prop, String(props[prop]));
+        if (props[prop]) {
+          element.setAttribute(prop, String(props[prop]));
+        }
       }
     }
   }

@@ -1,16 +1,15 @@
-import { JSElement } from "../interfaces/js-element";
-import { PageArguments } from "../interfaces/page-arguments";
-import { PageElement } from "../interfaces/page-element";
-import { IRoute } from "../interfaces/routes";
-import { ChangeDetection } from "./change-detection";
-import { Component } from "./component";
-import { Routing } from "./routing";
+import { JSElement } from '../interfaces/js-element';
+import { PageArguments } from '../interfaces/page-arguments';
+import { PageElement } from '../interfaces/page-element';
+import { IRoute } from '../interfaces/routes';
+import { ChangeDetection } from './change-detection';
+import { Component } from './component';
+import { Routing } from './routing';
 
 export class Page {
-
   constructor(
-    private zone: HTMLElement,
     private page: PageElement | ((args?: PageArguments) => PageElement),
+    private zone: HTMLElement,
     private args?: PageArguments,
   ) {}
 
@@ -35,19 +34,17 @@ export class Page {
 
   components(components: JSElement[]) {
     if (components && components.length) {
-      return components.map((component) => (
-        new Component(component).render()
-      ));
+      return components.map((component) => new Component(component).render());
     }
     return [];
   }
 
   applyBodyComponents(body: JSElement[], zone: HTMLElement) {
     const bodyComponents = [];
-    
+
     if (body && body.length) {
       bodyComponents.push(...this.components(body));
-    
+
       if (bodyComponents.length) {
         this.appendChilds(zone, bodyComponents);
       }
@@ -57,16 +54,15 @@ export class Page {
   }
 
   updateDocumentTitle(title: string) {
-    /**
-     * Assuming that the <title> tag will exist in whatever situation
-     */
-    const domTitleElement = document.querySelector('title') as HTMLElement;
-    domTitleElement.innerText = title;
+    const domTitleElement = document.querySelector('title');
+    if (domTitleElement) {
+      domTitleElement.innerText = title;
+    }
   }
 
   renderContext(pageElement: PageElement, pageInstance: Page): void {
-    const context = new Page(pageInstance.safeZone, pageElement, {
-      changeDetection: new ChangeDetection(this, pageElement)
+    const context = new Page(pageElement, pageInstance.safeZone, {
+      changeDetection: new ChangeDetection(this, pageElement),
     });
 
     context.render();
@@ -77,13 +73,13 @@ export class Page {
       const PageComponent = this.page;
       this.page = PageComponent({
         ...this.args,
-        changeDetection: new ChangeDetection(this, PageComponent)
+        changeDetection: new ChangeDetection(this, PageComponent),
       });
     }
 
     const { body, title, routes } = this.page;
 
-    const components = this.applyBodyComponents(body, this.zone);
+    const components = this.applyBodyComponents(body ?? [], this.zone);
 
     if (title && title.length) {
       this.updateDocumentTitle(title);
