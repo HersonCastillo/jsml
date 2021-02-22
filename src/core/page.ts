@@ -60,7 +60,10 @@ export class Page {
     }
   }
 
-  renderContext(pageElement: PageElement, pageInstance: Page): void {
+  renderContext(
+    pageElement: PageElement | ((args?: PageArguments) => PageElement),
+    pageInstance: Page,
+  ): void {
     const context = new Page(pageElement, pageInstance.safeZone, {
       changeDetection: new ChangeDetection(this, pageElement),
     });

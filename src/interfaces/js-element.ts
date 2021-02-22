@@ -9,5 +9,5 @@ export interface JSElement {
   events?: JSElementEvent[];
   classes?: string[];
   style?: Partial<CSSStyleDeclaration>;
-  [htmlElementProperty: string]: any;
+  [htmlElementProp: string]: any;
 }
