@@ -6,7 +6,7 @@ PS 2: The name is currently a joke, dont take serious.
 
 How you can use it?
 
-  npm i --save @duox/jsml
+    npm i --save @duox/jsml
 
 `app.ts`
 ```javascript
