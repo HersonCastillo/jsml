@@ -2,8 +2,8 @@ import { PageElement } from './page-element';
 
 export interface IRoute {
   page: PageElement;
-  default: boolean;
+  default?: boolean;
   path: string;
-  onLoad: () => boolean;
-  onLeave: () => void;
+  onLoad?: (route: IRoute) => boolean;
+  onLeave?: (route: IRoute) => void;
 }
