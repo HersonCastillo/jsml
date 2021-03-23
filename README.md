@@ -7,64 +7,78 @@ PS: This library is not recommended at all for projects in production and less f
 
 PS 2: The name is currently a joke, dont take serious.
 
+** Version 2 released **
+
 How you can use it?
 
     npm i --save @duox/jsml
 
 `app.ts`
 ```typescript
-import { IRoute, PageElement } from '@duox/jsml';
+import { JSMLElement, JSMLPageCycle, JSPage } from '@duox/jsml';
+import { Span } from '../components/span';
 
-const Span = (text: string) => ({
-  tag: 'span',
-  child: text
-});
-
-export const App = (): PageElement => ({
-  body: [
-    Span('Hi World!')
-  ],
-});
-
+@JSPage()
+export class App implements JSMLPageCycle {
+  render(): JSMLElement[] {
+    return [
+      Span('Hola Mundo!'),
+    ];
+  }
+}
 ```
 
 `main.ts`
 
 ```typescript
-import { Page } from '@duox/jsml';
-import { App } from './app';
+import { JSMLPage } from '@duox/jsml';
+import { App } from './pages/app';
 
-const appContainer = document.querySelector('#app');
+const appContainer = document.querySelector('#app') as HTMLElement;
 
-const mainPage = new Page(App, appContainer);
+const app = new JSMLPage(App, appContainer);
 
-mainPage.render();
+app.render();
 ```
 
 Or also you can use a routing system, for example:
 
 `app.ts`
 ```typescript
-import { IRoute, PageElement } from '@duox/jsml';
+import {
+  JSMLElement,
+  JSMLPageCycle,
+  JSMLRoute,
+  JSPage,
+  JSRoutes
+} from '@duox/jsml';
+import { Container } from '../components/container';
 import { HomePage } from './home.page';
 
-const routes: IRoute[] = [
+const routes: JSMLRoute[] = [
   {
+    Page: HomePage,
     default: true,
-    page: HomePage,
     path: 'home',
-    onLeave: () => {
-      console.log('Leave');
-    },
-    onLoad: () => {
-      console.log('Load');
-
-      return true;
-    },
   }
 ];
 
-export const App = (): PageElement => ({ routes });
+@JSRoutes({
+  routes,
+  zoneId: "main[key='main-navigation']"
+})
+@JSPage()
+export class App implements JSMLPageCycle {
+  render(): JSMLElement[] {
+    return [
+      Container({
+        key: 'main-navigation'
+      }),
+    ];
+  }
+}
 ```
+
+Note: Wait a little more context about this new version, and maybe a documentation.
 
 Enjoy!
