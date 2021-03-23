@@ -5,6 +5,7 @@ import { JSMLUpdater } from '../core/updater';
 interface JSPageDecoratorProps {
   key: string;
   providers: ClassProviderType[];
+  title: string;
 }
 
 export type ClassPageType = (new(...args: any[]) => JSMLPageCycle);
@@ -19,6 +20,13 @@ export const JSPage = (props?: Partial<JSPageDecoratorProps>) => (
       providersInstance.push(
         ...factoryAdapter.getInstancesOf(props?.providers),
       );
+    }
+
+    if (props?.title) {
+      const titleTag = document.querySelector('title');
+      if (titleTag) {
+        titleTag.innerHTML = props?.title;
+      }
     }
 
     Target.prototype.instance = new Target(updater, ...providersInstance);
