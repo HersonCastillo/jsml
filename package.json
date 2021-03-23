@@ -1,6 +1,6 @@
 {
   "name": "@duox/jsml",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "JS Markup Language",
   "main": "index.js",
   "scripts": {

@@ -1,4 +1,4 @@
-import { PageFragment } from '@c/fragment.core';
+import { PageFragment } from '../core/fragment.core';
 import { Component } from '../interfaces';
 
 export abstract class PagePhase {

@@ -15,12 +15,12 @@ How you can use it?
 
 `app.ts`
 ```typescript
-import { JSMLElement, JSMLPageCycle, JSPage } from '@duox/jsml';
+import { Component, PagePhase, Page } from '@duox/jsml';
 import { Span } from '../components/span';
 
-@JSPage()
-export class App implements JSMLPageCycle {
-  render(): JSMLElement[] {
+@Page()
+export class App implements PagePhase {
+  render(): Component[] {
     return [
       Span('Hola Mundo!'),
     ];
@@ -31,12 +31,12 @@ export class App implements JSMLPageCycle {
 `main.ts`
 
 ```typescript
-import { JSMLPage } from '@duox/jsml';
+import { PageResolver } from '@duox/jsml';
 import { App } from './pages/app';
 
 const appContainer = document.querySelector('#app') as HTMLElement;
 
-const app = new JSMLPage(App, appContainer);
+const app = new PageResolver(App, appContainer);
 
 app.render();
 ```
@@ -46,16 +46,16 @@ Or also you can use a routing system, for example:
 `app.ts`
 ```typescript
 import {
-  JSMLElement,
-  JSMLPageCycle,
-  JSMLRoute,
-  JSPage,
-  JSRoutes
+  Component,
+  PagePhase,
+  Route,
+  Page,
+  Routes
 } from '@duox/jsml';
 import { Container } from '../components/container';
 import { HomePage } from './home.page';
 
-const routes: JSMLRoute[] = [
+const routes: Route[] = [
   {
     Page: HomePage,
     default: true,
@@ -63,13 +63,13 @@ const routes: JSMLRoute[] = [
   }
 ];
 
-@JSRoutes({
+@Routes({
   routes,
   zoneId: "main[key='main-navigation']"
 })
-@JSPage()
-export class App implements JSMLPageCycle {
-  render(): JSMLElement[] {
+@Page()
+export class App implements PagePhase {
+  render(): Component[] {
     return [
       Container({
         key: 'main-navigation'

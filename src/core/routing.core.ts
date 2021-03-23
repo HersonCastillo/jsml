@@ -1,4 +1,4 @@
-import { Route } from '@i/route.interface';
+import { Route } from '../interfaces/route.interface';
 import { RoutesProps } from '../decorators';
 import { PageResolver } from './page.core';
 

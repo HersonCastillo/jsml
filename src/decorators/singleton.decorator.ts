@@ -1,4 +1,4 @@
-import { ClassProviderType, factoryAdapter } from '@c/factory.core';
+import { ClassProviderType, factoryAdapter } from '../core/factory.core';
 
 interface SingletonProps {
   providers: ClassProviderType[];

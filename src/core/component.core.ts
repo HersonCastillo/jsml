@@ -1,4 +1,7 @@
-import { Component, ComponentEvent } from '@i/component.interface';
+import {
+  Component,
+  ComponentEvent,
+} from '../interfaces/component.interface';
 
 export class ComponentResolver {
   constructor(

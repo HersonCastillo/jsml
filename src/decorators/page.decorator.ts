@@ -1,5 +1,5 @@
-import { ClassProviderType, factoryAdapter } from '@c/factory.core';
-import { Updater } from '@c/updater.core';
+import { ClassProviderType, factoryAdapter } from '../core/factory.core';
+import { Updater } from '../core/updater.core';
 import { PagePhase } from '../base';
 
 interface PageDecoratorProps {
