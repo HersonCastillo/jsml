@@ -1,9 +1,8 @@
-import { ComponentArguments } from '../interfaces/component-arguments';
 import { JSMLElement, JSMLElementEvent } from '../interfaces/js-element';
 
 export class JSMLComponent {
   constructor(
-    private element: JSMLElement | ((args?: ComponentArguments) => JSMLElement),
+    private element: JSMLElement | (() => JSMLElement),
   ) { }
 
   render(): HTMLElement {

@@ -1,3 +1,3 @@
 export * from './page';
 export * from './routes';
-export * from './singleton';
+export { JSSingleton } from './singleton';

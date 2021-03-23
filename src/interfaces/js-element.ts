@@ -9,5 +9,6 @@ export interface JSMLElement {
   events?: JSMLElementEvent[];
   classes?: string[];
   style?: Partial<CSSStyleDeclaration>;
+  key?: string;
   [htmlElementProp: string]: any;
 }

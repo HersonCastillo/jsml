@@ -5,12 +5,11 @@ interface JSSingletonProps {
 }
 
 export const JSSingleton = (props?: Partial<JSSingletonProps>) => (
-  (_: ClassProviderType) => {
+  (Target: ClassProviderType) => {
+    factoryAdapter.addInstance(Target);
+
     if (props?.providers?.length) {
-      for (const Provider of props.providers) {
-        factoryAdapter.addInstance(Provider);
-      }
-      _.prototype.instances = factoryAdapter.getInstancesOf(props.providers);
+      Target.prototype.instances = factoryAdapter.getInstancesOf(props.providers);
     }
   }
 );
