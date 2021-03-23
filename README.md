@@ -7,7 +7,7 @@ PS: This library is not recommended at all for projects in production and less f
 
 PS 2: The name is currently a joke, dont take serious.
 
-** Version 2 released **
+**Version 2 released**
 
 How you can use it?
 

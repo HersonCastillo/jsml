@@ -1,3 +1,3 @@
-export * from './page';
-export * from './routes';
-export { JSSingleton } from './singleton';
+export * from './page.decorator';
+export * from './routes.decorator';
+export { Singleton } from './singleton.decorator';

@@ -1,18 +1,18 @@
-import { JSMLPageCycle } from '../base';
-import { ClassProviderType, factoryAdapter } from '../core/factory';
-import { JSMLUpdater } from '../core/updater';
+import { ClassProviderType, factoryAdapter } from '@c/factory.core';
+import { Updater } from '@c/updater.core';
+import { PagePhase } from '../base';
 
-interface JSPageDecoratorProps {
+interface PageDecoratorProps {
   key: string;
   providers: ClassProviderType[];
   title: string;
 }
 
-export type ClassPageType = (new(...args: any[]) => JSMLPageCycle);
+export type ClassPageType = (new(...args: any[]) => PagePhase);
 
-export const JSPage = (props?: Partial<JSPageDecoratorProps>) => (
+export const Page = (props?: Partial<PageDecoratorProps>) => (
   (Target: ClassPageType) => {
-    const updater = new JSMLUpdater();
+    const updater = new Updater();
     const providersInstance: unknown[] = [];
     Target.prototype.key = props?.key ?? null;
 

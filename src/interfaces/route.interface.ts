@@ -1,8 +1,8 @@
 import { ClassPageType } from '../decorators';
 
-export interface JSMLRoute {
+export interface Route {
   Page: ClassPageType;
   default?: boolean;
   path: string;
-  onLoad?: (route: JSMLRoute) => boolean;
+  onLoad?: (route?: Route) => boolean;
 }

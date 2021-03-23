@@ -1,14 +1,14 @@
-import { JSRoutesProps } from '../decorators';
-import { JSMLRoute } from '../interfaces/routes';
-import { JSMLPage } from './page';
+import { Route } from '@i/route.interface';
+import { RoutesProps } from '../decorators';
+import { PageResolver } from './page.core';
 
-export class JSMLRouting {
+export class RoutingResolver {
   private currentHash = location.hash;
-  private currentRoute!: JSMLRoute;
+  private currentRoute!: Route;
 
   constructor(
-    private routing: JSRoutesProps,
-    private pageInstance: JSMLPage,
+    private routing: RoutesProps,
+    private pageInstance: PageResolver,
   ) {
     window.onhashchange = this.hashChangeEvent.bind(this);
   }
@@ -38,7 +38,7 @@ export class JSMLRouting {
     return document.querySelector(zoneId);
   }
 
-  evaluateCleanZone(route: JSMLRoute): boolean {
+  evaluateCleanZone(route: Route): boolean {
     if (route) {
       if (this.currentRoute) {
         return this.currentRoute.path !== route.path;
@@ -71,7 +71,7 @@ export class JSMLRouting {
     }
   }
 
-  prepareRenderization(route: JSMLRoute): void {
+  prepareRenderization(route: Route): void {
     const { Page, onLoad } = route;
     const renderStatus = this.evaluateCleanZone(route);
     const zone = this.resolveZone();

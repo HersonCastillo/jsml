@@ -1,17 +1,17 @@
-export type ClassProviderType = (new(...args: any[]) => any);
+export type ClassProviderType = (new(...args: any[]) => void | null | undefined | unknown);
 
-export class JSMLFactory {
+export class FactoryResolver {
   static instances: unknown[] = [];
 
   addInstance(Provider: ClassProviderType): unknown {
-    const instanceMap = JSMLFactory.instances.find(
+    const instanceMap = FactoryResolver.instances.find(
       (CurrentInstance) => CurrentInstance instanceof Provider,
     );
 
     if (!instanceMap) {
       const providers: unknown[] = Provider?.prototype?.instances ?? [];
       const providerInstance = new Provider(...providers);
-      JSMLFactory.instances.push(providerInstance);
+      FactoryResolver.instances.push(providerInstance);
 
       return providerInstance;
     }
@@ -20,7 +20,7 @@ export class JSMLFactory {
   }
 
   getInstance(Provider: ClassProviderType): unknown | null {
-    return JSMLFactory.instances.find(
+    return FactoryResolver.instances.find(
       (CurrentInstance) => CurrentInstance instanceof Provider,
     );
   }
@@ -41,8 +41,8 @@ export class JSMLFactory {
   }
 
   get instances(): unknown[] {
-    return JSMLFactory.instances;
+    return FactoryResolver.instances;
   }
 }
 
-export const factoryAdapter = new JSMLFactory();
+export const factoryAdapter = new FactoryResolver();

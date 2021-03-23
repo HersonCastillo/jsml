@@ -1,10 +1,10 @@
-import { ClassProviderType, factoryAdapter } from '../core/factory';
+import { ClassProviderType, factoryAdapter } from '@c/factory.core';
 
-interface JSSingletonProps {
+interface SingletonProps {
   providers: ClassProviderType[];
 }
 
-export const JSSingleton = (props?: Partial<JSSingletonProps>) => (
+export const Singleton = (props?: Partial<SingletonProps>) => (
   (Target: ClassProviderType) => {
     factoryAdapter.addInstance(Target);
 

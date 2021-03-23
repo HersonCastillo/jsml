@@ -1,7 +1,7 @@
-export { JSMLComponent } from './core/component';
-export { JSMLPage } from './core/page';
-export { JSMLRouting } from './core/routing';
-export { JSMLUpdater } from './core/updater';
+export { ComponentResolver } from './core/component.core';
+export { PageResolver } from './core/page.core';
+export { RoutingResolver } from './core/routing.core';
+export { Updater } from './core/updater.core';
 export * from './interfaces';
 export * from './decorators';
 export * from './base';

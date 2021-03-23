@@ -1,21 +1,16 @@
-import { JSMLElement, JSMLElementEvent } from '../interfaces/js-element';
+import { Component, ComponentEvent } from '@i/component.interface';
 
-export class JSMLComponent {
+export class ComponentResolver {
   constructor(
-    private element: JSMLElement | (() => JSMLElement),
+    private component: Component,
   ) { }
 
   render(): HTMLElement {
-    if (typeof this.element === 'function') {
-      const CurrentComponent = this.element;
-      this.element = CurrentComponent();
-    }
-
-    return this.createElement(this.element);
+    return this.createElement(this.component);
   }
 
-  createElement(jsElement: JSMLElement): HTMLElement {
-    const { classes, child, events, tag, style, ...rest } = jsElement;
+  createElement(component: Component): HTMLElement {
+    const { classes, child, events, tag, style, ...rest } = component;
     const domElement = document.createElement(tag);
 
     if (style) {
@@ -43,7 +38,7 @@ export class JSMLComponent {
           this.appendChild(domElement, currentChildElement);
         }
       } else {
-        const childElement = this.createElement(child as JSMLElement);
+        const childElement = this.createElement(child as Component);
         this.appendChild(domElement, childElement);
       }
     }
@@ -77,7 +72,7 @@ export class JSMLComponent {
     }
   }
 
-  assignEvents(element: HTMLElement, events: JSMLElementEvent[]): void {
+  assignEvents(element: HTMLElement, events: ComponentEvent[]): void {
     if (element && events && events.length) {
       for (const event of events) {
         const { name, handler } = event;

@@ -1,3 +1,2 @@
-export { ComponentArguments } from './component-arguments';
-export { JSMLElement, JSMLElementEvent } from './js-element';
-export { JSMLRoute } from './routes';
+export { Component, ComponentEvent } from './component.interface';
+export { Route } from './route.interface';

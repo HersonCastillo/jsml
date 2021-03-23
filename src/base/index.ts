@@ -1,1 +1,1 @@
-export { JSMLPageCycle } from './page-cycle.base';
+export { PagePhase } from './phase.base';

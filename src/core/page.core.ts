@@ -1,32 +1,32 @@
-import { JSMLPageCycle } from '../base';
-import { ClassPageType, JSRoutesProps } from '../decorators';
-import { JSMLElement } from '../interfaces';
-import { JSMLPageFragment } from './fragment';
-import { JSMLRouting } from './routing';
+import { PagePhase } from '../base';
+import { ClassPageType, RoutesProps } from '../decorators';
+import { Component } from '../interfaces';
+import { PageFragment } from './fragment.core';
+import { RoutingResolver } from './routing.core';
 
-export class JSMLPage {
+export class PageResolver {
   constructor(
     private page: ClassPageType,
     private zone: HTMLElement,
   ) { }
 
   render(): void {
-    const pageInstance: JSMLPageCycle = this.page.prototype?.instance;
-    const pageRouting: JSRoutesProps = this.page.prototype?.routing;
+    const pageInstance: PagePhase = this.page.prototype?.instance;
+    const pageRouting: RoutesProps = this.page.prototype?.routing;
 
     if (pageInstance) {
-      const elements: JSMLElement[] = pageInstance?.render() ?? [];
+      const elements: Component[] = pageInstance?.render() ?? [];
       if (pageInstance?.onStart) {
         pageInstance.onStart(pageInstance);
       }
       if (elements && elements.length) {
-        const pageFragment = new JSMLPageFragment(elements);
+        const pageFragment = new PageFragment(elements);
         this.zone.appendChild(pageFragment.render());
         if (pageInstance?.onRender) {
           pageInstance.onRender(pageFragment);
         }
         if (pageRouting) {
-          const routeSystem = new JSMLRouting(pageRouting, this);
+          const routeSystem = new RoutingResolver(pageRouting, this);
           routeSystem.start();
         }
       }
