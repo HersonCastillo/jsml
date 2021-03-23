@@ -1,10 +1,8 @@
-import { PageElement } from './page-element';
-import { PageArguments } from './page-arguments';
+import { ClassPageType } from '../decorators';
 
-export interface IRoute {
-  page: PageElement | ((args?: PageArguments) => PageElement);
+export interface JSMLRoute {
+  Page: ClassPageType;
   default?: boolean;
   path: string;
-  onLoad?: (route: IRoute) => boolean;
-  onLeave?: (route: IRoute) => void;
+  onLoad?: (route: JSMLRoute) => boolean;
 }

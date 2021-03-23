@@ -1,11 +1,15 @@
-import { IRoute } from '../interfaces/routes';
-import { Page } from './page';
+import { JSRoutesProps } from '../decorators';
+import { JSMLRoute } from '../interfaces/routes';
+import { JSMLPage } from './page';
 
-export class Routing {
+export class JSMLRouting {
   private currentHash = location.hash;
-  private currentRoute!: IRoute;
+  private currentRoute!: JSMLRoute;
 
-  constructor(private routes: IRoute[], private pageInstance: Page) {
+  constructor(
+    private routing: JSRoutesProps,
+    private pageInstance: JSMLPage,
+  ) {
     window.onhashchange = this.hashChangeEvent.bind(this);
   }
 
@@ -29,7 +33,12 @@ export class Routing {
     return route.trim();
   }
 
-  evaluateCleanZone(route: IRoute): boolean {
+  resolveZone(): HTMLElement | null {
+    const { zoneId } = this.routing;
+    return document.querySelector(zoneId);
+  }
+
+  evaluateCleanZone(route: JSMLRoute): boolean {
     if (route) {
       if (this.currentRoute) {
         return this.currentRoute.path !== route.path;
@@ -40,11 +49,14 @@ export class Routing {
   }
 
   cleanZone() {
-    this.pageInstance.safeZone.innerHTML = '';
+    const zone = this.resolveZone();
+    if (zone) {
+      zone.innerHTML = '';
+    }
   }
 
   renderPage(currentPath: string | null) {
-    const { routes } = this;
+    const { routes } = this.routing;
     const notFound = routes.find((route) => route.path.includes('**'));
     const currentPage = routes.find(
       (route) =>
@@ -56,27 +68,23 @@ export class Routing {
       this.prepareRenderization(currentPage);
     } else if (notFound) {
       this.prepareRenderization(notFound);
-    } else {
-      throw Error('Wrong routing configuration');
     }
   }
 
-  prepareRenderization(route: IRoute): void {
-    const { page, onLoad, onLeave } = route;
+  prepareRenderization(route: JSMLRoute): void {
+    const { Page, onLoad } = route;
     const renderStatus = this.evaluateCleanZone(route);
-    if (this.currentRoute && onLeave) {
-      onLeave(route);
-    }
+    const zone = this.resolveZone();
     this.currentRoute = route;
     if (renderStatus) {
       this.cleanZone();
       if (onLoad) {
         const onLoadResult = onLoad(route);
         if (onLoadResult) {
-          this.pageInstance.renderContext(page, this.pageInstance);
+          this.pageInstance.renderContext(Page, zone!);
         }
       } else {
-        this.pageInstance.renderContext(page, this.pageInstance);
+        this.pageInstance.renderContext(Page, zone!);
       }
     }
   }

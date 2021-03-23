@@ -1,12 +1,12 @@
-export interface JSElementEvent {
+export interface JSMLElementEvent {
   name: string;
   handler: EventListenerOrEventListenerObject;
 }
 
-export interface JSElement {
+export interface JSMLElement {
   tag: string;
-  child?: JSElement | JSElement[] | string;
-  events?: JSElementEvent[];
+  child?: JSMLElement | JSMLElement[] | string;
+  events?: JSMLElementEvent[];
   classes?: string[];
   style?: Partial<CSSStyleDeclaration>;
   [htmlElementProp: string]: any;

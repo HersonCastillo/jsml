@@ -1,22 +1,21 @@
 import { ComponentArguments } from '../interfaces/component-arguments';
-import { JSElement, JSElementEvent } from '../interfaces/js-element';
+import { JSMLElement, JSMLElementEvent } from '../interfaces/js-element';
 
-export class Component {
+export class JSMLComponent {
   constructor(
-    private element: JSElement | ((args?: ComponentArguments) => JSElement),
-    private args?: ComponentArguments,
-  ) {}
+    private element: JSMLElement | ((args?: ComponentArguments) => JSMLElement),
+  ) { }
 
   render(): HTMLElement {
     if (typeof this.element === 'function') {
       const CurrentComponent = this.element;
-      this.element = CurrentComponent(this.args);
+      this.element = CurrentComponent();
     }
 
     return this.createElement(this.element);
   }
 
-  createElement(jsElement: JSElement): HTMLElement {
+  createElement(jsElement: JSMLElement): HTMLElement {
     const { classes, child, events, tag, style, ...rest } = jsElement;
     const domElement = document.createElement(tag);
 
@@ -45,7 +44,7 @@ export class Component {
           this.appendChild(domElement, currentChildElement);
         }
       } else {
-        const childElement = this.createElement(child as JSElement);
+        const childElement = this.createElement(child as JSMLElement);
         this.appendChild(domElement, childElement);
       }
     }
@@ -79,7 +78,7 @@ export class Component {
     }
   }
 
-  assignEvents(element: HTMLElement, events: JSElementEvent[]): void {
+  assignEvents(element: HTMLElement, events: JSMLElementEvent[]): void {
     if (element && events && events.length) {
       for (const event of events) {
         const { name, handler } = event;
