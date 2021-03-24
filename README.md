@@ -9,6 +9,8 @@ PS 2: The name is currently a joke, dont take serious.
 
 **Version 2 released**
 
+Check our online [documentation](https://jsml-docs.herokuapp.com/#home)! (stills in development, made on JSML)
+
 How you can use it?
 
     npm i --save @duox/jsml
@@ -78,7 +80,5 @@ export class App implements PagePhase {
   }
 }
 ```
-
-Note: Wait a little more context about this new version, and maybe a documentation.
 
 Enjoy!
