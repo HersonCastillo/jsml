@@ -24,6 +24,7 @@ export const Page = (props?: Partial<PageDecoratorProps>) => (
 
     if (props?.title) {
       const titleTag = document.querySelector('title');
+      Target.prototype.title = props?.title ?? null;
       if (titleTag) {
         titleTag.innerHTML = props?.title;
       }

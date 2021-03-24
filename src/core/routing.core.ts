@@ -76,6 +76,14 @@ export class RoutingResolver {
     const renderStatus = this.evaluateCleanZone(route);
     const zone = this.resolveZone();
     this.currentRoute = route;
+
+    if (Page.prototype?.title) {
+      const titleTag = document.querySelector('title');
+      if (titleTag) {
+        titleTag.innerHTML = Page.prototype?.title;
+      }
+    }
+
     if (renderStatus) {
       this.cleanZone();
       if (onLoad) {
