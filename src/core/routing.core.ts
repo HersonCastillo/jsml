@@ -1,6 +1,7 @@
 import { Route } from '../interfaces/route.interface';
 import { RoutesProps } from '../decorators';
 import { PageResolver } from './page.core';
+import { ref } from '../helpers';
 
 export class RoutingResolver {
   private currentHash = location.hash;
@@ -35,7 +36,7 @@ export class RoutingResolver {
 
   resolveZone(): HTMLElement | null {
     const { zoneId } = this.routing;
-    return document.querySelector(zoneId);
+    return ref(zoneId, 'router-outlet') as HTMLElement;
   }
 
   evaluateCleanZone(route: Route): boolean {
@@ -57,22 +58,57 @@ export class RoutingResolver {
 
   renderPage(currentPath: string | null) {
     const { routes } = this.routing;
+    const slashLength = currentPath?.split('/').length ?? 0;
     const notFound = routes.find((route) => route.path.includes('**'));
-    const currentPage = routes.find(
-      (route) =>
-        route.path.includes(currentPath!)
-        || (Boolean(route.default) && !currentPath),
-    );
+    if (slashLength === 1) {
+      const currentPage = routes.find(
+        (route) =>
+          route.path.includes(currentPath!)
+          || (Boolean(route.default) && !currentPath),
+      );
 
-    if (currentPage) {
-      this.prepareRenderization(currentPage);
+      this.setRenderization(currentPage, notFound);
+    } else if (slashLength > 1 && currentPath) {
+      const pathFragments = currentPath.split('/');
+
+      const currentPage = routes.find((route) => {
+        const routeFragments = route.path.split('/');
+        if (routeFragments.length === pathFragments.length) {
+          const withExpressions = routeFragments.map((routeFragment) => {
+            if (routeFragment.startsWith(':')) {
+              return routeFragment.replace(
+                new RegExp('^[:a-zA-Z]{1,}$', 'g'),
+                '^[a-zA-Z0-9_-]{1,}$',
+              );
+            }
+            return routeFragment;
+          });
+          let routeCount = 0;
+          withExpressions.forEach((expression, index) => {
+            const regularExpression = new RegExp(expression, 'gi');
+            if (regularExpression.test(pathFragments[index])) {
+              routeCount++;
+            }
+          });
+          return routeCount === routeFragments.length;
+        }
+        return false;
+      });
+
+      this.setRenderization(currentPage, notFound);
+    }
+  }
+
+  setRenderization(renderRoute?: Route | null, notFound?: Route): void {
+    if (renderRoute) {
+      this.prepareRenderization(renderRoute);
     } else if (notFound) {
       this.prepareRenderization(notFound);
     }
   }
 
   prepareRenderization(route: Route): void {
-    const { Page, onLoad } = route;
+    const { Page, onLoad, path } = route;
     const renderStatus = this.evaluateCleanZone(route);
     const zone = this.resolveZone();
     this.currentRoute = route;
@@ -82,6 +118,13 @@ export class RoutingResolver {
       if (titleTag) {
         titleTag.innerHTML = Page.prototype?.title;
       }
+    }
+
+    if (window ?? globalThis) {
+      Object.defineProperty(window ?? globalThis, '$jsmlpath', {
+        value: path,
+        writable: true,
+      });
     }
 
     if (renderStatus) {

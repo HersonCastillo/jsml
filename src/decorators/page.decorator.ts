@@ -3,7 +3,6 @@ import { Updater } from '../core/updater.core';
 import { PagePhase } from '../base';
 
 interface PageDecoratorProps {
-  key: string;
   providers: ClassProviderType[];
   title: string;
 }
@@ -14,7 +13,6 @@ export const Page = (props?: Partial<PageDecoratorProps>) => (
   (Target: ClassPageType) => {
     const updater = new Updater();
     const providersInstance: unknown[] = [];
-    Target.prototype.key = props?.key ?? null;
 
     if (props?.providers?.length) {
       providersInstance.push(

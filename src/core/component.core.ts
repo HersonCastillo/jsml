@@ -8,20 +8,20 @@ export class ComponentResolver {
     private component: Component,
   ) { }
 
-  render(): HTMLElement {
+  render(): Element {
     return this.createElement(this.component);
   }
 
-  createElement(component: Component): HTMLElement {
-    const { classes, child, events, tag, style, ...rest } = component;
+  createElement(component: Component): Element {
+    const { classNames, child, events, tag, style, ...rest } = component;
     const domElement = document.createElement(tag);
 
     if (style) {
       this.assignStyle(domElement, style);
     }
 
-    if (classes) {
-      this.assignClasses(domElement, classes);
+    if (classNames) {
+      this.assignClasses(domElement, classNames);
     }
 
     if (events && events.length) {
@@ -49,7 +49,7 @@ export class ComponentResolver {
     return domElement;
   }
 
-  appendChild(element: HTMLElement, node: HTMLElement | Node): void {
+  appendChild(element: Element, node: Element | Node): void {
     if (element && node) {
       element.appendChild(node);
     }
@@ -65,7 +65,7 @@ export class ComponentResolver {
     }
   }
 
-  assignClasses(element: HTMLElement, classes: string[]): void {
+  assignClasses(element: Element, classes: string[]): void {
     if (element && classes && classes.length) {
       for (const className of classes) {
         if (element && element.classList) {
@@ -75,7 +75,7 @@ export class ComponentResolver {
     }
   }
 
-  assignEvents(element: HTMLElement, events: ComponentEvent[]): void {
+  assignEvents(element: Element, events: ComponentEvent[]): void {
     if (element && events && events.length) {
       for (const event of events) {
         const { name, handler } = event;
@@ -84,7 +84,7 @@ export class ComponentResolver {
     }
   }
 
-  assignUnsigedProperties(element: HTMLElement, props: any): void {
+  assignUnsigedProperties(element: Element, props: any): void {
     if (element) {
       for (const prop in props) {
         if (props[prop]) {

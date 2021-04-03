@@ -5,3 +5,4 @@ export { Updater } from './core/updater.core';
 export * from './interfaces';
 export * from './decorators';
 export * from './base';
+export * from './helpers';

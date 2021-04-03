@@ -7,7 +7,7 @@ export interface Component {
   tag: string;
   child?: Component | Component[] | string;
   events?: ComponentEvent[];
-  classes?: string[];
+  classNames?: string[];
   style?: Partial<CSSStyleDeclaration>;
   key?: string;
   [htmlElementProp: string]: any;

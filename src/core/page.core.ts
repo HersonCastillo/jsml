@@ -7,7 +7,7 @@ import { RoutingResolver } from './routing.core';
 export class PageResolver {
   constructor(
     private page: ClassPageType,
-    private zone: HTMLElement,
+    private zone: Element,
   ) { }
 
   render(): void {
@@ -21,7 +21,7 @@ export class PageResolver {
       }
       if (elements && elements.length) {
         const pageFragment = new PageFragment(elements);
-        this.zone.appendChild(pageFragment.render());
+        this.zone?.appendChild(pageFragment.render());
         if (pageInstance?.onRender) {
           pageInstance.onRender(pageFragment);
         }
@@ -33,10 +33,11 @@ export class PageResolver {
     }
   }
 
-  renderContext(page: ClassPageType, zone: HTMLElement) {
-    this.page = page;
-    this.zone = zone;
-
-    this.render();
+  renderContext(page: ClassPageType, zone: Element | null) {
+    if (zone) {
+      this.page = page;
+      this.zone = zone;
+      this.render();
+    }
   }
 }
