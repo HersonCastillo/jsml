@@ -56,44 +56,47 @@ export class RoutingResolver {
     }
   }
 
+  pageFragmentAnalysis(routes: Route[], pathFragments: string[]): Route | undefined {
+    return routes.find((route) => {
+      const routeFragments = route.path.split('/');
+      if (routeFragments.length === pathFragments.length) {
+        const withExpressions = routeFragments.map((routeFragment) => {
+          if (routeFragment.startsWith(':')) {
+            return routeFragment.replace(
+              new RegExp('^[:a-zA-Z]{1,}$', 'g'),
+              '^[a-zA-Z0-9_-]{1,}$',
+            );
+          }
+          return routeFragment;
+        });
+        let routeCount = 0;
+        withExpressions.forEach((expression, index) => {
+          const regularExpression = new RegExp(expression, 'gi');
+          if (regularExpression.test(pathFragments[index])) {
+            routeCount++;
+          }
+        });
+        return routeCount === routeFragments.length;
+      }
+      return false;
+    });
+  }
+
   renderPage(currentPath: string | null) {
     const { routes } = this.routing;
     const slashLength = currentPath?.split('/').length ?? 0;
     const notFound = routes.find((route) => route.path.includes('**'));
-    if (slashLength === 1) {
+    if (slashLength <= 1) {
       const currentPage = routes.find(
         (route) =>
           route.path.includes(currentPath!)
-          || (Boolean(route.default) && !currentPath),
+          || (route.default && !currentPath),
       );
 
       this.setRenderization(currentPage, notFound);
     } else if (slashLength > 1 && currentPath) {
       const pathFragments = currentPath.split('/');
-
-      const currentPage = routes.find((route) => {
-        const routeFragments = route.path.split('/');
-        if (routeFragments.length === pathFragments.length) {
-          const withExpressions = routeFragments.map((routeFragment) => {
-            if (routeFragment.startsWith(':')) {
-              return routeFragment.replace(
-                new RegExp('^[:a-zA-Z]{1,}$', 'g'),
-                '^[a-zA-Z0-9_-]{1,}$',
-              );
-            }
-            return routeFragment;
-          });
-          let routeCount = 0;
-          withExpressions.forEach((expression, index) => {
-            const regularExpression = new RegExp(expression, 'gi');
-            if (regularExpression.test(pathFragments[index])) {
-              routeCount++;
-            }
-          });
-          return routeCount === routeFragments.length;
-        }
-        return false;
-      });
+      const currentPage = this.pageFragmentAnalysis(routes, pathFragments);
 
       this.setRenderization(currentPage, notFound);
     }
@@ -107,11 +110,12 @@ export class RoutingResolver {
     }
   }
 
-  prepareRenderization(route: Route): void {
-    const { Page, onLoad, path } = route;
+  async prepareRenderization(route: Route): Promise<void> {
+    const { page, onLoad, path } = route;
     const renderStatus = this.evaluateCleanZone(route);
     const zone = this.resolveZone();
     this.currentRoute = route;
+    const Page = await page;
 
     if (Page.prototype?.title) {
       const titleTag = document.querySelector('title');
