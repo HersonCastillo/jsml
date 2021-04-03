@@ -8,7 +8,7 @@ interface TagProps {
 export const tag = (
   htmlTagName: HTMLTag,
   components?: Component | Component[] | string | null,
-  style?: CSSStyleDeclaration | null,
+  style?: Partial<CSSStyleDeclaration> | null,
   props?: TagProps | null,
 ): Component => ({
   tag: htmlTagName,
